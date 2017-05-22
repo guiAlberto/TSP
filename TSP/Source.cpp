@@ -9,7 +9,7 @@
 using namespace std;
 
 vector<City> loadCitiesFromFile();
-Solution loadBurutalForceSolution(vector<City>);
+Solution loadBuruteForceSolution(vector<City>);
 vector<vector<City>> loadCitiesPermutation(vector<City>);
 vector<vector<City>> loadCitiesPermutation(vector<City>, vector<vector<City>>, int, int);
 double loadDistance(vector<City>);
@@ -19,13 +19,12 @@ void generateFileResult(string, Solution);
 int main() {
 	try {
 		vector<City> cities = loadCitiesFromFile();
-		Solution brutalForceSolution = loadBurutalForceSolution(cities);
-		generateFileResult("Brutal Force Solution", brutalForceSolution);
+		Solution bruteForceSolution = loadBuruteForceSolution(cities);
+		generateFileResult("Brute Force Solution", bruteForceSolution);
 	}
 	catch (runtime_error & e) {
 		cerr << e.what() << endl;
 	}
-	system("pause");
 	return 0;
 }
 
@@ -69,7 +68,7 @@ vector<City> loadCitiesFromFile() {
 	return cities;
 }
 
-Solution loadBurutalForceSolution(vector<City> cities) {
+Solution loadBuruteForceSolution(vector<City> cities) {
 	int n = cities.size() - 1;
 	vector<vector<City>> permutation = loadCitiesPermutation(cities);
 	double bestDistance;
