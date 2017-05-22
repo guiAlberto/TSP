@@ -10,9 +10,6 @@
 
 using namespace std;
 
-double loadDistance(vector<City>);
-double loadDistance(City, City);
-
 int main() {
 	try {
 		vector<City> cities = Util().loadCitiesFromFile();
