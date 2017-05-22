@@ -66,18 +66,18 @@ void Util::generateFileResult(string filename, Solution solution) {
 }
 
 
-double Util::loadDistanceFromTwoCities(City a, City b) {
+double Util::loadDistance(City a, City b) {
 	double dx = pow((a.getX() - b.getX()), 2);
 	double dy = pow((a.getY() - b.getY()), 2);
 	double distance = sqrt(dx + dy);
 	return distance;
 }
 
-double Util::loadDistanceFromVector(vector<City> cities) {
+double Util::loadDistance(vector<City> cities) {
 	double distance = 0;
 	for (size_t i = 0; i < cities.size() - 1; i++) {
-		distance += loadDistanceFromTwoCities(cities.at(i), cities.at(i + 1));
+		distance += loadDistance(cities.at(i), cities.at(i + 1));
 	}
-	distance += loadDistanceFromTwoCities(cities.front(), cities.back());
+	distance += loadDistance(cities.front(), cities.back());
 	return distance;
 }

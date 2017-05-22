@@ -14,19 +14,9 @@ public:
 	Solution(vector<City>, double);
 	~Solution();
 
-	vector<City> getCities() {
-		return this->cities;
-	}
+	vector<City> getCities();
+	double getDistance();
 
-	double getDistance() {
-		return this->distance;
-	}
-
-	void setCities(vector<City> cities) {
-		this->cities = cities;
-	}
-
-	void setDistance(double distance) {
-		this->distance = distance;
-	}
+	void setCities(vector<City> cities);
+	void setDistance(double distance);
 };

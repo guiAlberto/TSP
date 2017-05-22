@@ -10,16 +10,8 @@ public:
 	City(int, int, int);
 	~City();
 
-	int getX() {
-		return this->x;
-	}
-
-	int getY() {
-		return this->y;
-	}
-
-	int getId() {
-		return this->id;
-	}
+	int getX();
+	int getY();
+	int getId();
 };
 

@@ -1,7 +1,5 @@
 #include <iostream>
-#include <fstream>
 #include <vector>
-#include <algorithm>
 
 #include "City.h"
 #include "Solution.h"

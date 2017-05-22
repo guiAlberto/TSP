@@ -12,9 +12,11 @@ class Util
 public:
 	Util();
 	~Util();
+	
 	vector<City> loadCitiesFromFile();
 	void generateFileResult(string, Solution);
-	double loadDistanceFromVector(vector<City>);
-	double loadDistanceFromTwoCities(City, City);
+	
+	double loadDistance(vector<City>);
+	double loadDistance(City, City);
 };
 

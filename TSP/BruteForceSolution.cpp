@@ -40,7 +40,7 @@ Solution BruteForceSolution::loadSolution(vector<City> cities) {
 	int i = 0;
 	for (size_t i = 0; i < permutation.size(); i++) {
 		vector<City> citiesTemp = permutation.at(i);
-		double distanceTemp = Util().loadDistanceFromVector(citiesTemp);
+		double distanceTemp = Util().loadDistance(citiesTemp);
 		if (i == 0) {
 			bestDistance = distanceTemp;
 			bestCities = citiesTemp;

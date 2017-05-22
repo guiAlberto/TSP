@@ -15,3 +15,23 @@ Solution::Solution(vector<City> cities, double distance)
 Solution::~Solution()
 {
 }
+
+vector<City> Solution::getCities()
+{
+	return this->cities;
+}
+
+double Solution::getDistance()
+{
+	return this->distance;
+}
+
+void Solution::setCities(vector<City> cities)
+{
+	this->cities = cities;
+}
+
+void Solution::setDistance(double distance)
+{
+	this->distance = distance;
+}

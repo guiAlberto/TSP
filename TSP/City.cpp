@@ -12,3 +12,18 @@ City::City(int x, int y, int id) {
 City::~City()
 {
 }
+
+int City::getX()
+{
+	return this->x;
+}
+
+int City::getY()
+{
+	return this->y;
+}
+
+int City::getId()
+{
+	return this->id;
+}
