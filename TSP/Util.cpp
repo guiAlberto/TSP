@@ -78,6 +78,5 @@ double Util::loadDistance(vector<City> cities) {
 	for (size_t i = 0; i < cities.size() - 1; i++) {
 		distance += loadDistance(cities.at(i), cities.at(i + 1));
 	}
-	distance += loadDistance(cities.front(), cities.back());
 	return distance;
 }
