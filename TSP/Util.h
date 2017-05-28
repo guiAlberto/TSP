@@ -14,6 +14,7 @@ public:
 	~Util();
 	
 	vector<City> loadCitiesFromFile();
+	vector<City> loadCitiesFromFile(string);
 	void generateFileResult(string, Solution);
 	
 	double loadDistance(vector<City>);
