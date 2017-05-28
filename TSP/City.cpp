@@ -2,6 +2,14 @@
 
 
 
+bool City::equals(City city)
+{
+	if (city.getId() == this->id) {
+		return true;
+	}
+	return false;
+}
+
 City::City(int x, int y, int id) {
 	this->x = x;
 	this->y = y;

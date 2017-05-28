@@ -1,4 +1,5 @@
 #include <fstream>
+#include <random>
 
 #include "Util.h"
 
@@ -72,6 +73,23 @@ double Util::loadDistance(City a, City b) {
 	double distance = sqrt(dx + dy);
 	return distance;
 }
+
+double Util::loadRandomNumber(double min, double max)
+{
+	random_device rd;
+	uniform_real_distribution<double> ud(min, max);
+	mt19937 mt(rd());
+	return ud(mt);
+}
+
+int Util::loadRandomNumber(int min, int max)
+{
+	random_device rd;
+	uniform_int_distribution<int> ud(min, max);
+	mt19937 mt(rd());
+	return ud(mt);
+}
+
 
 double Util::loadDistance(vector<City> cities) {
 	double distance = 0;

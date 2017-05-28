@@ -13,5 +13,7 @@ public:
 	int getX();
 	int getY();
 	int getId();
+	
+	bool equals(City);
 };
 

@@ -18,5 +18,8 @@ public:
 	
 	double loadDistance(vector<City>);
 	double loadDistance(City, City);
+
+	double loadRandomNumber(double, double);
+	int loadRandomNumber(int, int);
 };
 
