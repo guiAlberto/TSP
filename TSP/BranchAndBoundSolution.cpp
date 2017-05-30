@@ -106,16 +106,3 @@ vector<Branch> BranchAndBoundSolution::expandChildren(Branch originalBranch)
 	}
 	return expandedBranches;
 }
-
-vector<Branch> BranchAndBoundSolution::removeBranch(vector<Branch> originalBranch, Branch branchToRemove)
-{
-	vector<Branch> newBranch;
-
-	for (size_t i = 0; i < originalBranch.size(); i++) {
-		Branch branch = originalBranch.at(i);
-		if (!branchToRemove.equals(branch)) {
-			newBranch.push_back(branch);
-		}
-	}
-	return newBranch;
-}

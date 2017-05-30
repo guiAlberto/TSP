@@ -9,7 +9,6 @@ class BranchAndBoundSolution
 {
 private:
 	vector<Branch>expandChildren(Branch);
-	vector<Branch> removeBranch(vector<Branch>, Branch);
 public:
 	BranchAndBoundSolution();
 	~BranchAndBoundSolution();
