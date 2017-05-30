@@ -19,15 +19,15 @@ int main() {
 
 			Solution bruteForceSolution = BruteForceSolution().loadSolution(cities);
 			Util().generateFileResult("Brute Force Solution", bruteForceSolution);
-			cout << "Time of Brute Force Solution with " << cities.size() << " vertices: " << bruteForceSolution.getTime() << endl;
+			cout << "Time of Brute Force Solution with " << cities.size() << " vertices: " << bruteForceSolution.getTime() << " ms" << endl;
 
 			Solution brachAndBoundSolution = BranchAndBoundSolution().loadSolution(cities);
 			Util().generateFileResult("Branch and Bound Solution", brachAndBoundSolution);
-			cout << "Time of Branch and Bound Solution with " << cities.size() << " vertices: " << brachAndBoundSolution.getTime() << endl;
+			cout << "Time of Branch and Bound Solution with " << cities.size() << " vertices: " << brachAndBoundSolution.getTime() << " ms" << endl;
 
 			Solution geneticSolution = GeneticSolution().loadSolution(cities);
 			Util().generateFileResult("Genetic Solution", geneticSolution);
-			cout << "Time of Genetic Solution with " << cities.size() << " vertices: " << geneticSolution.getTime() << endl;
+			cout << "Time of Genetic Solution with " << cities.size() << " vertices: " << geneticSolution.getTime() << " ms" << endl;
 			
 			cout << endl;
 		}
