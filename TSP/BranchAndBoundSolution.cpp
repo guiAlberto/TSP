@@ -1,6 +1,8 @@
 #include "BranchAndBoundSolution.h"
 
 vector<City> allCities;
+double inf = std::numeric_limits<double>::infinity();
+
 
 BranchAndBoundSolution::BranchAndBoundSolution()
 {
@@ -15,22 +17,40 @@ Solution BranchAndBoundSolution::loadSolution(vector<City> cities)
 {
 	allCities = cities;
 
+
+	City firstCity = cities.front();
+	vector<City> firstCityVector;
+	firstCityVector.push_back(firstCity);
+	double firstCost = 0;
+
+	Path firstPath = Path(firstCityVector, firstCost);
 	vector<Path> paths;
-	Path bestPath;
-	vector<City> firstCity;
-	firstCity.push_back(allCities.at(0));
+	paths.push_back(firstPath);
 
-	paths.push_back(Path(firstCity, 0));
-	bestPath = loadBestPath(paths);
+	Path bestPath = Path(vector<City>(), INFINITY);
 
-	// Avaliação do bestPath.size() com allCities.size() + 1 por causa da aresta que volta para o ponto inicial
-	while (bestPath.size() < (allCities.size() + 1)) {
-		vector<Path> children = expandChildren(bestPath);
-		paths = addAll(paths, children);
-		paths = removePath(paths, bestPath);
-		bestPath = loadBestPath(paths);
+	while (paths.size() > 0) {
+		Path actualPath = paths.back();
+		paths.pop_back();
+		
+		//bound
+		if (actualPath.getCost() > bestPath.getCost()) {
+			continue;
+		}
+
+		vector<Path> children = expandChildren(actualPath);
+		for (size_t i = 0; i < children.size(); i++) {
+			Path child = children.at(i);
+			paths.push_back(child);
+		}
+		if (paths.size() > 0) {
+			actualPath = paths.back();
+		}
+		if ((actualPath.size() == (allCities.size() + 1)) && actualPath.getCost() < bestPath.getCost()) {
+			bestPath = actualPath;
+			paths.pop_back();
+		}
 	}
-	// Remover ultimo elemento das cidades, que é igual ao primeiro
 	bestPath.popCity();
 	return Solution(bestPath.getCities(), bestPath.getCost());
 }
@@ -91,7 +111,7 @@ vector<Path> BranchAndBoundSolution::expandChildren(Path originalPath)
 		}
 	}
 	//Volta do ultimo vertice para o inicial
-	else {
+	else if(originalPath.size() == allCities.size()){
 		City newCity = allCities.front();
 		Path newPath = originalPath;
 		newPath.putCity(newCity);
