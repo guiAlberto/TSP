@@ -1,18 +1,18 @@
-#include "Path.h"
+#include "Branch.h"
 #include "Util.h"
 
-void Path::putCity(City city)
+void Branch::putCity(City city)
 {
 	this->increaseCost(Util().loadDistance(this->cities.back(), city));
 	this->cities.push_back(city);
 }
 
-void Path::increaseCost(double cost)
+void Branch::increaseCost(double cost)
 {
 	this->cost += cost;
 }
 
-bool Path::equals(Path path)
+bool Branch::equals(Branch path)
 {
 	size_t pathSize = path.getCities().size();
 	size_t thisSize = this->cities.size();
@@ -28,47 +28,47 @@ bool Path::equals(Path path)
 	return true;
 }
 
-size_t Path::size()
+size_t Branch::size()
 {
 	return this->cities.size();
 }
 
-void Path::popCity()
+void Branch::popCity()
 {
 	this->cities.pop_back();
 }
 
-Path::Path()
+Branch::Branch()
 {
 }
 
-Path::Path(vector<City> cities, double cost)
+Branch::Branch(vector<City> cities, double cost)
 {
 	this->cities = cities;
 	this->cost = cost;
 }
 
 
-Path::~Path()
+Branch::~Branch()
 {
 }
 
-vector<City> Path::getCities()
+vector<City> Branch::getCities()
 {
 	return this->cities;
 }
 
-double Path::getCost()
+double Branch::getCost()
 {
 	return this->cost;
 }
 
-void Path::setCities(vector<City> cities)
+void Branch::setCities(vector<City> cities)
 {
 	this->cities = cities;
 }
 
-void Path::setCost(double cost)
+void Branch::setCost(double cost)
 {
 	this->cost = cost;
 }

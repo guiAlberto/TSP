@@ -1,4 +1,5 @@
 #include "BranchAndBoundSolution.h"
+#include "Util.h"
 
 vector<City> allCities;
 double inf = std::numeric_limits<double>::infinity();
@@ -15,82 +16,67 @@ BranchAndBoundSolution::~BranchAndBoundSolution()
 
 Solution BranchAndBoundSolution::loadSolution(vector<City> cities)
 {
+	double startTime = Util().timer();
 	allCities = cities;
-
 
 	City firstCity = cities.front();
 	vector<City> firstCityVector;
 	firstCityVector.push_back(firstCity);
 	double firstCost = 0;
 
-	Path firstPath = Path(firstCityVector, firstCost);
-	vector<Path> paths;
-	paths.push_back(firstPath);
+	Branch firstBranch = Branch(firstCityVector, firstCost);
+	vector<Branch> branches;
+	branches.push_back(firstBranch);
 
-	Path bestPath = Path(vector<City>(), INFINITY);
+	Branch bestBranch = Branch(vector<City>(), INFINITY);
 
-	while (paths.size() > 0) {
-		Path actualPath = paths.back();
-		paths.pop_back();
+	while (branches.size() > 0) {
+		Branch actualBranch = branches.back();
+		branches.pop_back();
 		
 		//bound
-		if (actualPath.getCost() > bestPath.getCost()) {
+		if (actualBranch.getCost() > bestBranch.getCost()) {
 			continue;
 		}
 
-		vector<Path> children = expandChildren(actualPath);
+		vector<Branch> children = expandChildren(actualBranch);
 		for (size_t i = 0; i < children.size(); i++) {
-			Path child = children.at(i);
-			paths.push_back(child);
+			Branch child = children.at(i);
+			branches.push_back(child);
 		}
-		if (paths.size() > 0) {
-			actualPath = paths.back();
+		if (branches.size() > 0) {
+			actualBranch = branches.back();
 		}
-		if ((actualPath.size() == (allCities.size() + 1)) && actualPath.getCost() < bestPath.getCost()) {
-			bestPath = actualPath;
-			paths.pop_back();
-		}
-	}
-	bestPath.popCity();
-	return Solution(bestPath.getCities(), bestPath.getCost());
-}
-
-Path BranchAndBoundSolution::loadBestPath(vector<Path> paths)
-{
-	Path bestPath;
-	for (size_t i = 0; i < paths.size(); i++) {
-		Path path = paths.at(i);
-		if (i == 0) {
-			bestPath = path;
-		}
-		else {
-			if (path.getCost() < bestPath.getCost()) {
-				bestPath = path;
-			}
+		if ((actualBranch.size() == (allCities.size() + 1)) && actualBranch.getCost() < bestBranch.getCost()) {
+			bestBranch = actualBranch;
+			branches.pop_back();
 		}
 	}
-	return bestPath;
+	bestBranch.popCity();
 
+	double endTime = Util().timer();
+	double time = endTime - startTime;
+	return Solution(bestBranch.getCities(), bestBranch.getCost(), time);
 }
 
-vector<Path> BranchAndBoundSolution::addAll(vector<Path> paths, vector<Path> children)
+vector<Branch> BranchAndBoundSolution::addAll(vector<Branch> branches, vector<Branch> children)
 {
 	for (size_t i = 0; i < children.size(); i++) {
-		Path child = children.at(i);
-		paths.push_back(children.at(i));
+		Branch child = children.at(i);
+		branches.push_back(children.at(i));
 	}
-	return paths;
+	return branches;
 }
 
 
-vector<Path> BranchAndBoundSolution::expandChildren(Path originalPath)
+vector<Branch> BranchAndBoundSolution::expandChildren(Branch originalBranch)
 {
 	vector<City> children;
 	for (size_t i = 0; i < allCities.size(); i++) {
 		City city_i = allCities.at(i);
 		bool contains = false;
-		for (size_t j = 0; j < originalPath.getCities().size(); j++) {
-			City city_j = originalPath.getCities().at(j);
+		for (size_t j = 0; j < originalBranch.getCities().size(); j++) {
+			City city_j = originalBranch.getCities().at(j);
 			if (city_i.getId() == city_j.getId()) {
 				contains = true;
 				break;
@@ -101,34 +87,34 @@ vector<Path> BranchAndBoundSolution::expandChildren(Path originalPath)
 		}
 	}
 
-	vector<Path> expandedPaths;
+	vector<Branch> expandedBranches;
 	if (children.size() > 0) {
 		for (size_t i = 0; i < children.size(); i++) {
 			City newCity = children.at(i);
-			Path newPath = originalPath;
-			newPath.putCity(newCity);
-			expandedPaths.push_back(newPath);
+			Branch newBranch = originalBranch;
+			newBranch.putCity(newCity);
+			expandedBranches.push_back(newBranch);
 		}
 	}
 	//Volta do ultimo vertice para o inicial
-	else if(originalPath.size() == allCities.size()){
+	else if(originalBranch.size() == allCities.size()){
 		City newCity = allCities.front();
-		Path newPath = originalPath;
-		newPath.putCity(newCity);
-		expandedPaths.push_back(newPath);
+		Branch newBranch = originalBranch;
+		newBranch.putCity(newCity);
+		expandedBranches.push_back(newBranch);
 	}
-	return expandedPaths;
+	return expandedBranches;
 }
 
-vector<Path> BranchAndBoundSolution::removePath(vector<Path> originalPaths, Path pathToRemove)
+vector<Branch> BranchAndBoundSolution::removeBranch(vector<Branch> originalBranch, Branch branchToRemove)
 {
-	vector<Path> newPath;
+	vector<Branch> newBranch;
 
-	for (size_t i = 0; i < originalPaths.size(); i++) {
-		Path path = originalPaths.at(i);
-		if (!pathToRemove.equals(path)) {
-			newPath.push_back(path);
+	for (size_t i = 0; i < originalBranch.size(); i++) {
+		Branch branch = originalBranch.at(i);
+		if (!branchToRemove.equals(branch)) {
+			newBranch.push_back(branch);
 		}
 	}
-	return newPath;
+	return newBranch;
 }

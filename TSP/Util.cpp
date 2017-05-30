@@ -1,5 +1,6 @@
 #include <fstream>
 #include <random>
+#include <sstream>
 
 #include "Util.h"
 
@@ -52,9 +53,12 @@ vector<City> Util::loadCitiesFromFile() {
 	return cities;
 }
 
-vector<City> Util::loadCitiesFromFile(string fileName)
+vector<City> Util::loadCitiesFromFile(int i)
 {
 	vector<City> cities;
+	ostringstream ss;
+	ss << i + 1;
+	string fileName = "case" + ss.str() + ".txt";
 
 	ifstream file(fileName);
 
@@ -128,6 +132,13 @@ int Util::loadRandomNumber(int min, int max)
 	uniform_int_distribution<int> ud(min, max);
 	mt19937 mt(rd());
 	return ud(mt);
+}
+
+clock_t Util::timer()
+{
+	clock_t now;
+	now = clock();
+	return now;
 }
 
 

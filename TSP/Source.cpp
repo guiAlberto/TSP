@@ -1,8 +1,5 @@
 #include <iostream>
 #include <vector>
-#include <cstdio>
-#include <ctime>
-#include <sstream>
 
 #include "City.h"
 #include "Solution.h"
@@ -15,37 +12,25 @@ using namespace std;
 
 int main() {
 	try {
-		std::clock_t start;
-		double duration;
-		//vector<City> cities = Util().loadCitiesFromFile();
+		//para pegar o exemplo na descrição do trabalho, use o método vector<City> loadCitiesFromFile(); fora do "for"
 		for (size_t i = 0; i < 10; i++) {
-			ostringstream ss;
-			ss << i + 1;
-			string fileName = "case" + ss.str() + ".txt";
-			vector<City> cities = Util().loadCitiesFromFile(fileName);
+			//para pegar os casos de testes, use o método vector<City> loadCitiesFromFile(int); dentro do "for"
+			vector<City> cities = Util().loadCitiesFromFile(i);
 
-			start = std::clock();
 			Solution bruteForceSolution = BruteForceSolution().loadSolution(cities);
-			duration = (std::clock() - start) / (double)CLOCKS_PER_SEC;
-			cout << "Time of Brute Force Solution with " << cities.size() << " vertices: " << duration << endl;
 			Util().generateFileResult("Brute Force Solution", bruteForceSolution);
+			cout << "Time of Brute Force Solution with " << cities.size() << " vertices: " << bruteForceSolution.getTime() << endl;
 
-			start = std::clock();
 			Solution brachAndBoundSolution = BranchAndBoundSolution().loadSolution(cities);
-			duration = (std::clock() - start) / (double)CLOCKS_PER_SEC;
-			cout << "Time of Branch and Bound Solution with " << cities.size() << " vertices: " << duration << endl;
 			Util().generateFileResult("Branch and Bound Solution", brachAndBoundSolution);
+			cout << "Time of Branch and Bound Solution with " << cities.size() << " vertices: " << brachAndBoundSolution.getTime() << endl;
 
-			start = std::clock();
 			Solution geneticSolution = GeneticSolution().loadSolution(cities);
-			duration = (std::clock() - start) / (double)CLOCKS_PER_SEC;
-			cout << "Time of Genetic Solution with " << cities.size() << " vertices: " << duration << endl;
 			Util().generateFileResult("Genetic Solution", geneticSolution);
+			cout << "Time of Genetic Solution with " << cities.size() << " vertices: " << geneticSolution.getTime() << endl;
+			
 			cout << endl;
 		}
-
-		//Util().generateFileResult("Genetic Solution", geneticSolution);
-
 	}
 	catch (runtime_error & e) {
 		cerr << e.what() << endl;

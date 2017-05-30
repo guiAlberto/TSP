@@ -6,10 +6,12 @@ Solution::Solution()
 {
 }
 
-Solution::Solution(vector<City> cities, double distance)
+
+Solution::Solution(vector<City> cities, double distance, double time)
 {
 	this->cities = cities;
 	this->distance = distance;
+	this->time = time;
 }
 
 Solution::~Solution()
@@ -26,6 +28,11 @@ double Solution::getDistance()
 	return this->distance;
 }
 
+double Solution::getTime()
+{
+	return this->time;
+}
+
 void Solution::setCities(vector<City> cities)
 {
 	this->cities = cities;
@@ -34,4 +41,9 @@ void Solution::setCities(vector<City> cities)
 void Solution::setDistance(double distance)
 {
 	this->distance = distance;
+}
+
+void Solution::setTime(double time)
+{
+	this->time = time;
 }

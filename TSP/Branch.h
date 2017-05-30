@@ -5,7 +5,7 @@
 
 using namespace std;
 
-class Path
+class Branch
 {
 private:
 	vector<City> cities;
@@ -13,9 +13,9 @@ private:
 
 	void increaseCost(double);
 public:
-	Path();
-	Path(vector<City>, double);
-	~Path();
+	Branch();
+	Branch(vector<City>, double);
+	~Branch();
 
 	vector<City> getCities();
 	double getCost();
@@ -24,7 +24,7 @@ public:
 	void setCost(double);
 	
 	void putCity(City);
-	bool equals(Path);
+	bool equals(Branch);
 	size_t size();
 	void popCity();
 };

@@ -33,6 +33,7 @@ vector<vector<City>> BruteForceSolution::loadCitiesPermutation(vector<City> citi
 }
 
 Solution BruteForceSolution::loadSolution(vector<City> cities) {
+	double startTime = Util().timer();
 	int n = cities.size() - 1;
 	vector<vector<City>> permutation = loadCitiesPermutation(cities);
 	Solution bestSolution;
@@ -53,5 +54,9 @@ Solution BruteForceSolution::loadSolution(vector<City> cities) {
 		}
 		i++;
 	}
+	double endTime = Util().timer();
+	double time = endTime - startTime;
+	bestSolution.setTime(time);
+	
 	return bestSolution;
 }

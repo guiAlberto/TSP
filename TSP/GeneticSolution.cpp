@@ -159,6 +159,8 @@ GeneticSolution::~GeneticSolution()
 
 Solution GeneticSolution::loadSolution(vector<City> cities)
 {
+	double startTime = Util().timer();
+
 	vector<Chromosome> actualGeneration = loadFitstGeneration(cities);
 	size_t numberOfGenerations = 5;
 	size_t numberOfMutations = actualGeneration.size() / 2;
@@ -191,5 +193,8 @@ Solution GeneticSolution::loadSolution(vector<City> cities)
 	}
 	Chromosome best = loadBestChromosome(actualGeneration);
 	best.popCity();
-	return Solution(best.getCities(), best.getCost());
+
+	double endTime = Util().timer();
+	double time = endTime - startTime;
+	return Solution(best.getCities(), best.getCost(), time);
 }
