@@ -34,26 +34,27 @@ vector<vector<City>> BruteForceSolution::loadCitiesPermutation(vector<City> citi
 
 Solution BruteForceSolution::loadSolution(vector<City> cities) {
 	double startTime = Util().timer();
-	int n = cities.size() - 1;
+	
+	// gera todas as permutações dado um conjunto de cidades
 	vector<vector<City>> permutation = loadCitiesPermutation(cities);
+	
+	// a melhor solução inicial é a primeira
 	Solution bestSolution;
-	int i = 0;
-	for (size_t i = 0; i < permutation.size(); i++) {
+	bestSolution.setDistance(0);
+	bestSolution.setCities(permutation.at(0));
+
+	for (size_t i = 1; i < permutation.size(); i++) {
 		vector<City> citiesTemp = permutation.at(i);
 		double distanceTemp = Util().loadDistance(citiesTemp);
 		distanceTemp += Util().loadDistance(citiesTemp.front(), citiesTemp.back());
-		if (i == 0) {
+		
+		// se a solução atual for melhor do que a bestSolution, essa atual é a melhor
+		if (distanceTemp < bestSolution.getDistance()) {
 			bestSolution.setDistance(distanceTemp);
 			bestSolution.setCities(citiesTemp);
 		}
-		else {
-			if (distanceTemp < bestSolution.getDistance()) {
-				bestSolution.setDistance(distanceTemp);
-				bestSolution.setCities(citiesTemp);
-			}
-		}
-		i++;
 	}
+
 	double endTime = Util().timer();
 	double time = endTime - startTime;
 	bestSolution.setTime(time);

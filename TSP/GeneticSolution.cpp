@@ -3,35 +3,43 @@
 #include "ReproductionException.h"
 #include "MutationException.h"
 
-size_t threshold;
-double chanceToMutate = 20;
-
 Chromosome GeneticSolution::mutate(Chromosome chromosome)
 {
 	vector<City> cities = chromosome.getCities();
 	int firstIndex = Util().loadRandomNumber(0, cities.size() - 1);
 	int secondIndex = Util().loadRandomNumber(0, cities.size() - 1);
+	// definição hardcode que a chance de um cromossomo fazer mutação é de 20%
+	double chanceToMutate = 20;
+	
 	if (chromosome.isGoingToMutate(chanceToMutate)) {
 		swap(cities[firstIndex], cities[secondIndex]);
 	}
+	
+	// verifica se a mutação gerada é inválida
 	if (isInvalid(cities)) {
 		throw MutationException();
 	}
 	return Chromosome(cities, Util().loadDistance(cities));
 }
 
-Chromosome GeneticSolution::reproduce(Chromosome c1, Chromosome c2)
-{
-	size_t cutPosition = Util().loadRandomNumber(0, c1.getCities().size());
+// tanto faz se os parâmetros para corte e precedência de geração do filho forem tomados do cromossomo macho ou fêmea
+Chromosome GeneticSolution::reproduce(Chromosome male, Chromosome female)
+{	
+	// define uma posição aleatória de corte
+	size_t cutPosition = Util().loadRandomNumber(0, male.getCities().size());
 	vector<City> cities;
-	for (size_t i = 0; i < c1.getCities().size(); i++) {
+	for (size_t i = 0; i < male.getCities().size(); i++) {
+		// o que estiver antes do corte vem do cromossomo macho
 		if (i < cutPosition) {
-			cities.push_back(c1.getCities().at(i));
+			cities.push_back(male.getCities().at(i));
 		}
+		// o que estiver igual ou depois da posição de corte vem do cromossomo fêmea
 		else {
-			cities.push_back(c2.getCities().at(i));
+			cities.push_back(female.getCities().at(i));
 		}
 	}
+
+	// verifica se o filho gerado é inválida
 	if (isInvalid(cities)) {
 		throw ReproductionException();
 	}
@@ -42,9 +50,8 @@ Chromosome GeneticSolution::reproduce(Chromosome c1, Chromosome c2)
 vector<Chromosome> GeneticSolution::loadFitstGeneration(vector<City> cities)
 {
 	vector<Chromosome> chromosomes;
-	threshold = cities.size();
 
-	while (chromosomes.size() < threshold) {
+	while (chromosomes.size() < cities.size()) {
 		vector<City> citiesCopy = cities;
 		vector<City> newCities;
 		while (citiesCopy.size() > 0) {
@@ -60,7 +67,7 @@ vector<Chromosome> GeneticSolution::loadFitstGeneration(vector<City> cities)
 	return chromosomes;
 }
 
-vector<Chromosome> GeneticSolution::naturalSelection(vector<Chromosome> lastGeneration)
+vector<Chromosome> GeneticSolution::naturalSelection(vector<Chromosome> lastGeneration, int threshold)
 {
 	vector<Chromosome> newGeneration;
 
@@ -162,10 +169,16 @@ Solution GeneticSolution::loadSolution(vector<City> cities)
 	double startTime = Util().timer();
 
 	vector<Chromosome> actualGeneration = loadFitstGeneration(cities);
+	
+	// definição hardcode no número de gerações, número de mutações e número de reproduções
 	size_t numberOfGenerations = 5;
 	size_t numberOfMutations = actualGeneration.size() / 2;
 	size_t numberOfReproductions = actualGeneration.size() / 2;
+	
+	// para cada geração...
 	for (size_t i = 0; i < numberOfGenerations; i++) {
+		
+		// para cada mutação
 		for(size_t j = 0; j < numberOfMutations; j++){
 			try {
 				Chromosome chromossomeToMutate = actualGeneration.at(Util().loadRandomNumber(0, actualGeneration.size() - 1));
@@ -177,6 +190,7 @@ Solution GeneticSolution::loadSolution(vector<City> cities)
 			}
 		}
 
+		// para cada reprodução
 		for (size_t j = 0; j < numberOfReproductions; j++) {
 			Chromosome male = actualGeneration.at(Util().loadRandomNumber(0, actualGeneration.size() - 1));
 			Chromosome female = actualGeneration.at(Util().loadRandomNumber(0, actualGeneration.size() - 1));
@@ -189,7 +203,8 @@ Solution GeneticSolution::loadSolution(vector<City> cities)
 			}
 		}
 
-		actualGeneration = naturalSelection(actualGeneration);
+		// seleção natural filtra a geração com o limite do número de vértices no grafo, essa regra pode ser alterada
+		actualGeneration = naturalSelection(actualGeneration, cities.size());
 	}
 	Chromosome best = loadBestChromosome(actualGeneration);
 	best.popCity();

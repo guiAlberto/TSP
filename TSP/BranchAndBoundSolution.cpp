@@ -2,8 +2,6 @@
 #include "Util.h"
 
 vector<City> allCities;
-double inf = std::numeric_limits<double>::infinity();
-
 
 BranchAndBoundSolution::BranchAndBoundSolution()
 {
@@ -34,24 +32,27 @@ Solution BranchAndBoundSolution::loadSolution(vector<City> cities)
 		Branch actualBranch = branches.back();
 		branches.pop_back();
 		
-		//bound
+		// corta a árvore quando um galho é pior do que a melhor solução
+		// aqui é o equivalente ao "bound"
 		if (actualBranch.getCost() > bestBranch.getCost()) {
 			continue;
 		}
 
 		vector<Branch> children = expandChildren(actualBranch);
-		for (size_t i = 0; i < children.size(); i++) {
-			Branch child = children.at(i);
-			branches.push_back(child);
-		}
+		branches = addAll(branches, children);
+		
+		// tratamento quando se chega no final da árvore
 		if (branches.size() > 0) {
 			actualBranch = branches.back();
 		}
+
+		// atualiza a melhor árvore caso o galho seja uma solução do TSP e caso ele seja melhor do que o bestBranch
 		if ((actualBranch.size() == (allCities.size() + 1)) && actualBranch.getCost() < bestBranch.getCost()) {
 			bestBranch = actualBranch;
 			branches.pop_back();
 		}
 	}
+
 	bestBranch.popCity();
 
 	double endTime = Util().timer();

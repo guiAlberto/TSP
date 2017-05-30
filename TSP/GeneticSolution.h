@@ -9,7 +9,7 @@ private:
 	Chromosome mutate(Chromosome);
 	Chromosome reproduce(Chromosome, Chromosome);
 	vector<Chromosome> loadFitstGeneration(vector<City>);
-	vector<Chromosome> naturalSelection(vector<Chromosome>);
+	vector<Chromosome> naturalSelection(vector<Chromosome>, int);
 	bool isInvalid(vector<City>);
 	vector<City> removeCity(vector<City>, City);
 	vector<Chromosome> removeChromossome(vector<Chromosome>, Chromosome);
